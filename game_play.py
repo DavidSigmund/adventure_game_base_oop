@@ -27,6 +27,9 @@ def setup_game(player_name):
     library = Room("Library",
                    "A quiet place filled with books",
                    x=0, y=-1)
+    bedroom = Room("Bedroom",
+                   "A chilly bedroom that looks like a crime scene.",
+                   x=0, y=-2)
     garden = Room("Garden",
                   "A lush garden full of flowers",
                   x=1, y=0)
@@ -36,7 +39,7 @@ def setup_game(player_name):
                  x=0, y=1)
 
     # List of all rooms
-    rooms = [kitchen, ballroom, dining_hall, library, garden, study]
+    rooms = [kitchen, ballroom, dining_hall, library, garden, study, bedroom]
 
     # Create items
     sword = Item("Sword", "A sharp-looking sword.")
@@ -47,7 +50,7 @@ def setup_game(player_name):
     ballroom.add_item(shield)
 
     # Create a player and start the game in the kitchen
-    player_in_the_kitchen = Player(player_name, kitchen, rooms)
+    player_in_the_kitchen = Player(player_name, kitchen)
 
     return player_in_the_kitchen
 
