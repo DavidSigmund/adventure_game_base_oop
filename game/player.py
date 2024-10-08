@@ -1,3 +1,4 @@
+from .room import Room
 # Ideas to extend functionality:
 # Add health & resource management:
 # - add health attribute
@@ -7,11 +8,11 @@
 
 # Define a class for the Player
 class Player:
-    def __init__(self, name, current_room, rooms):
+    def __init__(self, name, current_room):
         self.name = name
         self.current_room = current_room
+        print(self.current_room.x)
         self.inventory = []
-        self.rooms = rooms
         self.visited_rooms = {current_room}
 
     def move(self, direction):
@@ -28,21 +29,39 @@ class Player:
             print("Invalid direction.")
             return
 
-        # Find room at the new coordinates
-        new_room = None # Initialize new_room to None
-        # Loop through all rooms in self.rooms
-        for room in self.rooms:
-            # Check if the current room's coordinates match the target coordinates
-            if room.x == new_x and room.y == new_y:
-                new_room = room
-                break
+        # print("Visited rooms:")
+        # for room in self.visited_rooms:
+        #     print(f"Room: {room.name} at coordinates ({room.x}, {room.y})")
 
-        if new_room:
-            self.current_room = new_room
-            self.visited_rooms.add(new_room)
-            print(f"You are now in the {new_room.name}.")
-        else:
-            print(f"You can't go that way")
+        # als je al een keer in die kamer bent geweest
+        for room in self.visited_rooms:
+            if new_x == room.x and new_y == room.y:
+                self.current_room = room
+                self.current_room.x = new_x
+                self.current_room.y = new_y
+                return
+
+        self.current_room = Room.generate_room(new_x, new_y)
+        self.visited_rooms.add(self.current_room)
+        print("generate room outcome:")
+        print(self.current_room)
+        return
+
+        # Find room at the new coordinates
+        # new_room = None # Initialize new_room to None
+        # # Loop through all rooms in self.rooms
+        # for room in self.rooms:
+        #     # Check if the current room's coordinates match the target coordinates
+        #     if room.x == new_x and room.y == new_y:
+        #         new_room = room
+        #         break
+
+        # if new_room:
+        #     self.current_room = new_room
+        #     self.visited_rooms.add(new_room)
+        #     print(f"You are now in the {new_room.name}.")
+        # else:
+        #     print(f"You can't go that way")
 
     def pick_up(self, chosen_item_name):
         for item in self.current_room.items:
@@ -67,6 +86,7 @@ class Player:
     def display_map(self):
         # Determine the bounds of the map
         # Only the discovered rooms will be shown
+        print(self.visited_rooms)
         min_x = min(room.x for room in self.visited_rooms)
         max_x = max(room.x for room in self.visited_rooms)
         min_y = min(room.y for room in self.visited_rooms)

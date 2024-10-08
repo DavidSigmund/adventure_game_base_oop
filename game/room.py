@@ -14,6 +14,9 @@ class Room:
         self.x = x
         self.y = y
 
+    def __repr__(self):
+        return f'Room("{self.name}", "{self.description}", x={self.x}, y={self.y})'
+
     def generate_room(x, y):
         room_type = {"Kitchen": "A dark and dirty room buzzing with flies.",
                      "Ballroom": "A large room with shiny wooden floors; it looks like a nice place to dance.",
@@ -25,8 +28,8 @@ class Room:
 
         name = random.choice(list(room_type.keys()))
         description = room_type[name]
-        return [name, description, x, y]
 
+        return Room(name, description, x=x, y=y)
     def add_item(self, item):
         self.items.append(item)
 
