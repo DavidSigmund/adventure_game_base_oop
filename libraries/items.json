@@ -1,0 +1,44 @@
+{
+  "weapons": {
+    "Sword": {
+      "description": "A sharp-looking sword, perfect for close combat.",
+      "damage": 10
+    },
+    "Axe": {
+      "description": "A heavy battle axe, capable of dealing massive damage.",
+      "damage": 15
+    },
+    "Dagger": {
+      "description": "A small but lethal dagger, ideal for stealth attacks.",
+      "damage": 7
+    },
+    "Bow": {
+      "description": "A finely crafted bow with a quiver full of arrows.",
+      "damage": 8
+    },
+    "Magic Staff": {
+      "description": "An enchanted staff, brimming with arcane energy.",
+      "damage": 12
+    }
+  },
+  "armor": {
+    "Shield": {
+      "description": "A sturdy wooden shield.",
+      "armor": 5
+    },
+    "Helmet": {
+      "description": "A bronze helmet offering protection for the head.",
+      "armor": 7
+    }
+  },
+  "consumables": {
+    "Potion of healing": {
+      "description": "A small vial filled with a glowing red liquid that instantly restores a portion of the drinker's health.",
+      "healing": 10
+    },
+    "Great potion of healing": {
+      "description": "A larger vial containing a radiant red liquid, capable of restoring a significant amount of health.",
+      "healing": 20
+    }
+  }
+}
