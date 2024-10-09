@@ -1,11 +1,13 @@
+import json
 import random
+from .item import Item
+
 # Define a class for Rooms
 # Ways to expand:
 # - Add a method to add, remove and get enemies
 # - Add room interactions, through items, added doors, traps, hidden passages
 # - Add NPC (non-playable characters that give hints)
 class Room:
-
     def __init__(self, name, description, x=0, y=0):
         self.name = name
         self.description = description
@@ -14,22 +16,39 @@ class Room:
         self.x = x
         self.y = y
 
-    def __repr__(self):
-        return f'Room("{self.name}", "{self.description}", x={self.x}, y={self.y})'
-
     def generate_room(x, y):
-        room_type = {"Kitchen": "A dark and dirty room buzzing with flies.",
-                     "Ballroom": "A large room with shiny wooden floors; it looks like a nice place to dance.",
-                     "Dining Hall": "A vast room with a long table where a feast could be held.",
-                     "Library": "A quiet place filled with books",
-                     "Bedroom": "A chilly bedroom that looks like a crime scene.",
-                     "Garden": "A lush garden full of flowers",
-                     "Study": "You've entered a dimly lit Study Room, the scent of old books and parchment filling the air. Who knows what you could find in here?..."}
+        # get rooms and items from json file
+        roomsFilePath = 'libraries/rooms.json'
+        with open(roomsFilePath, 'r') as file:
+            rooms = json.load(file)
 
-        name = random.choice(list(room_type.keys()))
-        description = room_type[name]
+        itemsFilePath = 'libraries/items.json'
+        with open(itemsFilePath, 'r') as file:
+            items = json.load(file)
 
-        return Room(name, description, x=x, y=y)
+
+        # get random rooms out json file
+        name = random.choice(list(rooms['rooms']))
+        description = rooms['rooms'][name]['description']
+
+        # make the room
+        newRoom = Room(name, description, x=x, y=y)
+
+        # choose if room has item
+        if random.random() < rooms['rooms'][name]['hasItemProbability']:
+            # create item
+            itemName = random.choice(list(items['weapons']))
+            itemDetails = items['weapons'][itemName]
+            item = Item(itemName, itemDetails['description'])
+
+            #add item
+            newRoom.add_item(item)
+
+
+        return newRoom
+        #noitem
+
+
     def add_item(self, item):
         self.items.append(item)
 

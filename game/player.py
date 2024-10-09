@@ -11,7 +11,6 @@ class Player:
     def __init__(self, name, current_room):
         self.name = name
         self.current_room = current_room
-        print(self.current_room.x)
         self.inventory = []
         self.visited_rooms = {current_room}
 
@@ -29,41 +28,21 @@ class Player:
             print("Invalid direction.")
             return
 
-        # print("Visited rooms:")
-        # for room in self.visited_rooms:
-        #     print(f"Room: {room.name} at coordinates ({room.x}, {room.y})")
-
-        # als je al een keer in die kamer bent geweest
+        #if you have been in the room use the existing room
         for room in self.visited_rooms:
             if new_x == room.x and new_y == room.y:
                 self.current_room = room
-                self.current_room.x = new_x
-                self.current_room.y = new_y
                 return
 
+        # otherwise create new room
         self.current_room = Room.generate_room(new_x, new_y)
-        self.visited_rooms.add(self.current_room)
-        print("generate room outcome:")
         print(self.current_room)
+        self.visited_rooms.add(self.current_room)
         return
 
-        # Find room at the new coordinates
-        # new_room = None # Initialize new_room to None
-        # # Loop through all rooms in self.rooms
-        # for room in self.rooms:
-        #     # Check if the current room's coordinates match the target coordinates
-        #     if room.x == new_x and room.y == new_y:
-        #         new_room = room
-        #         break
-
-        # if new_room:
-        #     self.current_room = new_room
-        #     self.visited_rooms.add(new_room)
-        #     print(f"You are now in the {new_room.name}.")
-        # else:
-        #     print(f"You can't go that way")
-
     def pick_up(self, chosen_item_name):
+        print(self.current_room)
+        print(self.current_room)
         for item in self.current_room.items:
             if item.name == chosen_item_name:
                 self.inventory.append(item)
