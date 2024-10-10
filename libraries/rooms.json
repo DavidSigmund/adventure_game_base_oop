@@ -2,31 +2,38 @@
   "rooms": {
     "Kitchen": {
       "description": "A dark and dirty room buzzing with flies.",
-      "hasItemProbability": 0.7
+      "hasItemProbability": 0.7,
+      "spawnsEnemyProbability": 0.1
     },
     "Ballroom": {
       "description": "A large room with shiny wooden floors; it looks like a nice place to dance.",
-      "hasItemProbability": 0.9
+      "hasItemProbability": 0.9,
+      "spawnsEnemyProbability": 0.1
     },
     "Dining Hall": {
       "description": "A vast room with a long table where a feast could be held.",
-      "hasItemProbability": 0.2
+      "hasItemProbability": 0.2,
+      "spawnsEnemyProbability": 0.1
     },
     "Library": {
       "description": "A quiet place filled with books",
-      "hasItemProbability": 0.8
+      "hasItemProbability": 0.8,
+      "spawnsEnemyProbability": 0.1
     },
     "Bedroom": {
       "description": "A chilly bedroom that looks like a crime scene.",
-      "hasItemProbability": 0.4
+      "hasItemProbability": 0.4,
+      "spawnsEnemyProbability": 0.1
     },
     "Garden": {
       "description": "A lush garden full of flowers",
-      "hasItemProbability": 0.3
+      "hasItemProbability": 0.3,
+      "spawnsEnemyProbability": 0.1
     },
     "Study": {
       "description": "You've entered a dimly lit Study Room, the scent of old books and parchment filling the air. Who knows what you could find in here?...",
-      "hasItemProbability": 0.6
+      "hasItemProbability": 0.6,
+      "spawnsEnemyProbability": 0.1
     }
   }
 }

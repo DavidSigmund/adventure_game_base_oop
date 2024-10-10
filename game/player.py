@@ -1,3 +1,4 @@
+import json
 from .room import Room
 # Ideas to extend functionality:
 # Add health & resource management:
@@ -8,11 +9,74 @@ from .room import Room
 
 # Define a class for the Player
 class Player:
-    def __init__(self, name, current_room):
+    def __init__(self, name, current_room, health=100):
         self.name = name
         self.current_room = current_room
+        self.health = health
         self.inventory = []
         self.visited_rooms = {current_room}
+
+    def fightEnemy(self, enemy):
+        # Load items from JSON file
+        itemsFilePath = 'libraries/items.json'
+        with open(itemsFilePath, 'r') as file:
+            items = json.load(file)
+
+        # Assuming enemy.weapon is the name of the weapon
+        enemy.weaponName = enemy.weapon
+        enemy.weapon = items["weapons"].get(enemy.weapon, {"damage": 0})
+
+        print(f"You encountered an {enemy.name}!")
+
+        while enemy.health > 0 and self.health > 0:
+            print("\n--- Enemy Stats ---")
+            print(f"Name: {enemy.name}")
+            print(f"Description: {enemy.description}")
+            print(f"Health: {enemy.health}")
+            print(f"Enemy has item: {enemy.weaponName} with damage {enemy.weapon['damage']}")
+
+            print("\n--- Player Stats ---")
+            print(f"Name: {self.name}")
+            print(f"Health: {self.health}")
+            self.show_inventory()
+
+
+            selected_item = None
+
+            # Prompt for item selection
+            while not selected_item:
+                option = input("Choose your item to use: ").lower()
+                for item in self.inventory:
+                    if item.name.lower() == option:
+                        selected_item = item
+                        break
+
+                if selected_item:
+                    # Player attacks
+                    print(f"You used {selected_item.name} to attack the enemy!")
+                    enemy.health -= selected_item.damage
+                    print(f"You did {selected_item.damage} damage!")
+                    print(f"The {enemy.name} has {enemy.health} health left!")
+
+                    # end the fight if enemy is defeated
+                    if enemy.health <= 0:
+                        print(f"You defeated the {enemy.name}!")
+                        break
+
+                    # Enemy attacks
+                    print(f"{enemy.name} used {enemy.weaponName} to attack you!")
+                    self.health -= enemy.weapon['damage']
+                    print(f"{enemy.name} did {enemy.weapon['damage']} damage!")
+                    print(f"You have {self.health} health left!")
+
+                    # End the game if player is defeated
+                    if self.health <= 0:
+                        print("\033[91mYou have been defeated!\033[0m")
+                        exit()
+                else:
+                    print("You don't have that item in your inventory! Try again.")
+
+        print("Fight ended.")
 
     def move(self, direction):
         new_x, new_y = self.current_room.x, self.current_room.y
@@ -36,13 +100,18 @@ class Player:
 
         # otherwise create new room
         self.current_room = Room.generate_room(new_x, new_y)
-        print(self.current_room)
         self.visited_rooms.add(self.current_room)
+
+        # check for enemy and start fight
+        if self.current_room.enemies:
+            enemy = self.current_room.enemies[0]
+            self.fightEnemy(enemy)
+
         return
 
+
+
     def pick_up(self, chosen_item_name):
-        print(self.current_room)
-        print(self.current_room)
         for item in self.current_room.items:
             if item.name == chosen_item_name:
                 self.inventory.append(item)
@@ -65,7 +134,6 @@ class Player:
     def display_map(self):
         # Determine the bounds of the map
         # Only the discovered rooms will be shown
-        print(self.visited_rooms)
         min_x = min(room.x for room in self.visited_rooms)
         max_x = max(room.x for room in self.visited_rooms)
         min_y = min(room.y for room in self.visited_rooms)

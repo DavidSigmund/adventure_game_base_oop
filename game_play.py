@@ -17,10 +17,9 @@ def setup_game(player_name):
     startRoom = Room("elevator",
                    "The start of your journey in this dungeon of mistery.",
                    x=0, y=0)
-
-
     # Create a player and start the game in the elevator
     playerInstartRoom = Player(player_name, startRoom)
+    playerInstartRoom.inventory.append(Item("Fists", "Your hands.",  5))
 
     return playerInstartRoom
 

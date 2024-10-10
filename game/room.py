@@ -1,6 +1,7 @@
 import json
 import random
 from .item import Item
+from .enemy import Enemy
 
 # Define a class for Rooms
 # Ways to expand:
@@ -13,11 +14,12 @@ class Room:
         self.description = description
         self.exits = {}
         self.items = []
+        self.enemies = []
         self.x = x
         self.y = y
 
     def generate_room(x, y):
-        # get rooms and items from json file
+        # get rooms, items and enemies from json file
         roomsFilePath = 'libraries/rooms.json'
         with open(roomsFilePath, 'r') as file:
             rooms = json.load(file)
@@ -25,6 +27,10 @@ class Room:
         itemsFilePath = 'libraries/items.json'
         with open(itemsFilePath, 'r') as file:
             items = json.load(file)
+
+        enemiesFilePath = 'libraries/enemies.json'
+        with open(enemiesFilePath, 'r') as file:
+            enemies = json.load(file)
 
 
         # get random rooms out json file
@@ -34,21 +40,36 @@ class Room:
         # make the room
         newRoom = Room(name, description, x=x, y=y)
 
-        # choose if room has item
+        # choose if room has weapon
         if random.random() < rooms['rooms'][name]['hasItemProbability']:
-            # create item
-            itemName = random.choice(list(items['weapons']))
-            itemDetails = items['weapons'][itemName]
-            item = Item(itemName, itemDetails['description'])
+            # create weapon
+            weaponName = random.choice(list(items['weapons']))
+            weaponDetails = items['weapons'][weaponName]
+            weapon = Item(weaponName, weaponDetails['description'], weaponDetails['damage'])
 
-            #add item
-            newRoom.add_item(item)
+            #add weapon
+            newRoom.add_item(weapon)
 
+        # choose if to add enemy
+        if random.random() < rooms['rooms'][name]['spawnsEnemyProbability']:
+            #create enemy
+            enemyName = random.choice(list(enemies['enemies']))
+            enemyDetails = enemies['enemies'][enemyName]
+            enemy = Enemy(enemyName, enemyDetails['description'], enemyDetails['weapon'], enemyDetails['health'])
+
+            # add enemy
+            newRoom.add_enemy(enemy)
 
         return newRoom
-        #noitem
 
+    # enemies
+    def add_enemy(self, enemy):
+        self.enemies.append(enemy)
 
+    def remove_enemy(self, enemy):
+        self.enemies.remove(enemy)
+
+    # items
     def add_item(self, item):
         self.items.append(item)
 
