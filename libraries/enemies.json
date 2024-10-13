@@ -1,0 +1,19 @@
+{
+  "enemies": {
+    "skeleton": {
+      "description": "An animated skeleton armed with a bow.",
+      "health": 50,
+      "weapon": "Bow"
+    },
+    "zombie": {
+      "description": "A slow undead creature wielding a dagger.",
+      "health": 60,
+      "weapon": "Dagger"
+    },
+    "witch": {
+      "description": "A sorceress with a magic staff.",
+      "health": 45,
+      "weapon": "Magic Staff"
+    }
+  }
+}
