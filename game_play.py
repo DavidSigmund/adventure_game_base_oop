@@ -21,6 +21,11 @@ def setup_game(player_name):
     playerInstartRoom = Player(player_name, startRoom)
     playerInstartRoom.inventory.append(Item("Fists", "Your hands.",  5))
 
+    # test items
+    # playerInstartRoom.inventory.append(Item("Great potion of healing","A larger vial containing a radiant red liquid, capable of restoring a significant amount of health.",healing=20))
+    # playerInstartRoom.inventory.append(Item("helmet","A though piece of metal that barely fits your head.", armor = 7))
+
+
     return playerInstartRoom
 
 

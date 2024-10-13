@@ -9,10 +9,11 @@ from .room import Room
 
 # Define a class for the Player
 class Player:
-    def __init__(self, name, current_room, health=100):
+    def __init__(self, name, current_room, health=100, armor= 10):
         self.name = name
         self.current_room = current_room
         self.health = health
+        self.armor = armor
         self.inventory = []
         self.visited_rooms = {current_room}
 
@@ -41,21 +42,21 @@ class Player:
             self.show_inventory()
 
 
-            selected_item = None
+            selectedItem = None
 
             # Prompt for item selection
-            while not selected_item:
+            while not selectedItem:
                 option = input("Choose your item to use: ").lower()
                 for item in self.inventory:
                     if item.name.lower() == option:
-                        selected_item = item
+                        selectedItem = item
                         break
 
-                if selected_item:
+                if selectedItem:
                     # Player attacks
-                    print(f"You used {selected_item.name} to attack the enemy!")
-                    enemy.health -= selected_item.damage
-                    print(f"You did {selected_item.damage} damage!")
+                    print(f"You used {selectedItem.name} to attack the enemy!")
+                    enemy.health -= selectedItem.damage
+                    print(f"You did {selectedItem.damage} damage!")
                     print(f"The {enemy.name} has {enemy.health} health left!")
 
                     # end the fight if enemy is defeated
@@ -65,7 +66,8 @@ class Player:
 
                     # Enemy attacks
                     print(f"{enemy.name} used {enemy.weaponName} to attack you!")
-                    self.health -= enemy.weapon['damage']
+                    # take your armor as an percentage of the enemies attack
+                    self.health -= enemy.weapon['damage'] * (1 - (self.armor / 100))
                     print(f"{enemy.name} did {enemy.weapon['damage']} damage!")
                     print(f"You have {self.health} health left!")
 
@@ -109,8 +111,6 @@ class Player:
 
         return
 
-
-
     def pick_up(self, chosen_item_name):
         for item in self.current_room.items:
             if item.name == chosen_item_name:
@@ -120,11 +120,53 @@ class Player:
                 return
         print(f"There is no {chosen_item_name} here.")
 
+    def useItem(self, item):
+        if item.healing != 0:
+            self.health += item.healing
+            self.inventory.remove(item)
+            print(f"{item.name} healed {item.healing} damage!")
+        elif item.armor != 0:
+            self.armor += item.armor
+            self.inventory.remove(item)
+            print(f"{item.name} gave you {item.armor} armor!")
+        else:
+            print("This item can not be used now")
+
     def show_inventory(self):
         if self.inventory:
             print("You are carrying:")
             for item in self.inventory:
                 print(f"- {item.name}")
+
+            # ask user to use an item
+            try:
+                command = input("Do you want to use an item? Y/N: ").lower()
+                if command == "y":
+                    selectedItem = None
+
+                    # Prompt for item selection
+                    if self.inventory:  # Check if the inventory is not empty
+                        while not selectedItem:
+                            option = input("Choose your item to use: ").lower()
+
+                            for item in self.inventory:
+                                if item.name.lower() == option:
+                                    selectedItem = item
+                                    self.useItem(selectedItem)
+                                    break
+                            if not selectedItem:
+                                print("Invalid item name, please try again.")
+                    else:
+                        print("Your inventory is empty.")
+
+                elif command == "n":
+                    print("You chose not to use an item.")
+                else:
+                    print("Invalid choice, please enter 'Y' or 'N'.")
+
+            except Exception as e:
+                print(f"An error occurred: {e}")
+
         else:
             print("Your inventory is empty.")
 

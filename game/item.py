@@ -9,4 +9,4 @@ class Item:
         self.healing = healing
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.description}"

@@ -24,7 +24,7 @@
   "armor": {
     "Shield": {
       "description": "A sturdy wooden shield.",
-      "armor": 5
+      "armor": 10
     },
     "Helmet": {
       "description": "A bronze helmet offering protection for the head.",

@@ -3,11 +3,6 @@ import random
 from .item import Item
 from .enemy import Enemy
 
-# Define a class for Rooms
-# Ways to expand:
-# - Add a method to add, remove and get enemies
-# - Add room interactions, through items, added doors, traps, hidden passages
-# - Add NPC (non-playable characters that give hints)
 class Room:
     def __init__(self, name, description, x=0, y=0):
         self.name = name
@@ -42,13 +37,22 @@ class Room:
 
         # choose if room has weapon
         if random.random() < rooms['rooms'][name]['hasItemProbability']:
-            # create weapon
-            weaponName = random.choice(list(items['weapons']))
-            weaponDetails = items['weapons'][weaponName]
-            weapon = Item(weaponName, weaponDetails['description'], weaponDetails['damage'])
 
-            #add weapon
-            newRoom.add_item(weapon)
+            # randomly choose what kind of item to add
+            item_type = random.choice(['weapon', 'healing', 'armor'])
+
+            # create item
+            itemName = random.choice(list(items[item_type]))
+            itemDetails = items['weapons'][itemName]
+            if item_type == 'weapong':
+                item = Item(itemName, itemDetails['description'], itemDetails['damage'])
+            elif item_type == 'healing':
+                item = Item(itemName, itemDetails['description'], itemDetails['healing'])
+            elif item_type == 'armor':
+                item = Item(itemName, itemDetails['description'], itemDetails['armor'])
+
+            #add item
+            newRoom.add_item(item)
 
         # choose if to add enemy
         if random.random() < rooms['rooms'][name]['spawnsEnemyProbability']:
